@@ -6,7 +6,7 @@ pause('on');
 % addpath('/Users/harissair/Desktop/realtime_test_data/scripts');
 
 workingdir = ".";
-addpath ../code;
+addpath ./code;
 cd(workingdir);
 
 I_pre = 30; % Time Needed for preprocessing
@@ -20,7 +20,6 @@ bp_filt = [.01, 10]; % bandpass filtering
 NmotionPars = 6; % number of motion parameters
 nica = 15; % number of ICA component
 NT = 1e3; % length scanning
-
 
 % Other initalization parameters
 size3d = [64, 64, 36];
