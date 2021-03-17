@@ -5,11 +5,11 @@ pause('on');
 % workingdir='/Users/harissair/Desktop/realtime_test_data/real_time';
 % addpath('/Users/harissair/Desktop/realtime_test_data/scripts');
 
-workingdir = "."; % data folder 
-maskdir = "../SPM8_apriori/"; % mask folder
-
-addpath ./code; % code folder
+workingdir = ".";
+addpath ./code;
 cd(workingdir);
+
+maskdir = "../SPM8_apriori/"; % mask folder
 
 I_pre = 30; % Time Needed for preprocessing
 window_width = 50; % sliding window width
