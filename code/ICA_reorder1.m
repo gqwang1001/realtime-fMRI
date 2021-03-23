@@ -15,7 +15,9 @@ for i = 1:n1
     icasig_flipsigns(i,:) = signs(i) * icasig(i,:);
 end
 
-corr_ica = corr(icasig0(:, nbhd_idxs)', icasig_flipsigns(:, nbhd_idxs)');
+% corr_ica_mat = corrcoef(icasig0(:, nbhd_idxs)', icasig_flipsigns(:, nbhd_idxs)');
+% corr_ica = corr_ica_mat(1,2);
+corr_ica = corr_pairwise(icasig0(:, nbhd_idxs)', icasig_flipsigns(:, nbhd_idxs)');
 
 for i = 1:n0
 

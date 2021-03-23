@@ -412,7 +412,7 @@ else
     end;
     
     % Calculate PCA
-    [E, D]=pcamat(mixedsig, firstEig, lastEig, interactivePCA, verbose);
+    [E, D]=pcamat(mixedsig, firstEig, lastEig);
   end
 end
 

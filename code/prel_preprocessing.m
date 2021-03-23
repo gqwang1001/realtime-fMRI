@@ -18,4 +18,3 @@ function [nuisX_comb,tform_old, volVec, volRaw] = prel_preprocessing(i, X, maskI
                 nuisX];
         end
 end
-

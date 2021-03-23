@@ -9,10 +9,10 @@ function [registered, nuisanceX, reg_tform] = rt_preprocess(volumenew, volumeori
         reg_tform  = imregtform(volumenew, volumeoriginal, 'rigid', optimizer, metric, 'InitialTransformation', tform_old);
         registered = imwarp(volumenew, reg_tform, 'OutputView',imref3d(size(volumeoriginal)));
         motion_Pars = motionPar(reg_tform);
-        
-        %GSR with brain mask
-        maskedbrain = registered.*brainmask;
-        GSbrain = mean(maskedbrain(:));
+%         
+%         %GSR with brain mask
+%         maskedbrain = registered.*brainmask;
+%         GSbrain = mean(maskedbrain(:));
         
         % CSF and White Matter Regression
         csfSignal = registered .* csf_mask;

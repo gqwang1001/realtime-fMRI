@@ -1,0 +1,55 @@
+# CompilerName=clang
+# Mode=optim
+ninja_required_version = 1.3
+
+# Basic folders
+root = .
+builddir = $root/build/maci64
+matlabdir = /Applications/MATLAB_R2020a.app
+startdir = /Users/guoqingwang/Dropbox/projects/fastfMRI/realtime_rsfMRI/matlabcode/code
+
+# Toolchain information
+cc = /usr/bin/xcrun -sdk macosx10.15 clang
+cxx = /usr/bin/xcrun -sdk macosx10.15 clang++
+linker = /usr/bin/xcrun -sdk macosx10.15 clang
+linkerxx = /usr/bin/xcrun -sdk macosx10.15 clang++
+
+cflags =  -fno-common -arch x86_64 -mmacosx-version-min=10.9 -fexceptions -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -DMATLAB_MEX_FILE  -O2 -fwrapv -DNDEBUG -fvisibility=hidden -std=c99 -I "$root" -I "$startdir" -I "$root/interface" -I "$matlabdir/extern/include" -I "." -DMODEL=rt_slice_time_correction_mex -DMW_NEEDS_VERSION_H -c -fPIC -Xpreprocessor -fopenmp -I "$matlabdir/toolbox/eml/externalDependency/omp/maci64/include" -DOpenMP_omp_LIBRARY="$matlabdir/sys/os/maci64/libiomp5.dylib" 
+
+cxxflags =  -fno-common -arch x86_64 -mmacosx-version-min=10.9 -fexceptions -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -fobjc-arc -std=c++11 -stdlib=libc++ -DMATLAB_MEX_FILE  -O2 -fwrapv -DNDEBUG -fvisibility=hidden -std=c++11 -I "$root" -I "$startdir" -I "$root/interface" -I "$matlabdir/extern/include" -I "." -DMODEL=rt_slice_time_correction_mex -DMW_NEEDS_VERSION_H -c -fPIC -Xpreprocessor -fopenmp -I "$matlabdir/toolbox/eml/externalDependency/omp/maci64/include" -DOpenMP_omp_LIBRARY="$matlabdir/sys/os/maci64/libiomp5.dylib" 
+
+ldflags =  -Wl,-twolevel_namespace -undefined error -arch x86_64 -mmacosx-version-min=10.9 -Wl,-syslibroot,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -framework Cocoa -bundle  -stdlib=libc++ -L"$matlabdir/bin/maci64" -lmx -lmex -lmat -L"$matlabdir/extern/bin/maci64" -lMatlabDataArray -lMatlabEngine  -Wl,-rpath,@loader_path -o rt_slice_time_correction_mex.mexmaci64 -lemlrt -lcovrt -lut -lmwmathutil -fPIC -L"$matlabdir/sys/os/maci64" -liomp5
+
+# Build Rules
+rule cc
+    command = $cc $cflags $in -o $out
+
+rule cxx
+    command = $cxx $cxxflags $in -o $out
+
+rule link
+    command = $linker $in $ldflags
+
+rule linkxx
+    command = $linkerxx $in $ldflags
+
+# Build
+build $builddir/rt_nonfinite.o : cxx $root/rt_nonfinite.cpp
+build $builddir/rt_slice_time_correction_mexutil.o : cxx $root/rt_slice_time_correction_mexutil.cpp
+build $builddir/rt_slice_time_correction_data.o : cxx $root/rt_slice_time_correction_data.cpp
+build $builddir/rt_slice_time_correction_initialize.o : cxx $root/rt_slice_time_correction_initialize.cpp
+build $builddir/rt_slice_time_correction_terminate.o : cxx $root/rt_slice_time_correction_terminate.cpp
+build $builddir/rt_slice_time_correction.o : cxx $root/rt_slice_time_correction.cpp
+build $builddir/eml_int_forloop_overflow_check.o : cxx $root/eml_int_forloop_overflow_check.cpp
+build $builddir/indexShapeCheck.o : cxx $root/indexShapeCheck.cpp
+build $builddir/interp1.o : cxx $root/interp1.cpp
+build $builddir/fliplr.o : cxx $root/fliplr.cpp
+build $builddir/spline.o : cxx $root/spline.cpp
+build $builddir/ppval.o : cxx $root/ppval.cpp
+build $builddir/_coder_rt_slice_time_correction_api.o : cxx $root/interface/_coder_rt_slice_time_correction_api.cpp
+build $builddir/_coder_rt_slice_time_correction_mex.o : cxx $root/interface/_coder_rt_slice_time_correction_mex.cpp
+build $builddir/_coder_rt_slice_time_correction_info.o : cxx $root/interface/_coder_rt_slice_time_correction_info.cpp
+build $builddir/cpp_mexapi_version.o : cxx $matlabdir/extern/version/cpp_mexapi_version.cpp
+
+# Link
+build $root/rt_slice_time_correction_mex.mexmaci64 : linkxx $builddir/rt_nonfinite.o $builddir/rt_slice_time_correction_mexutil.o $builddir/rt_slice_time_correction_data.o $builddir/rt_slice_time_correction_initialize.o $builddir/rt_slice_time_correction_terminate.o $builddir/rt_slice_time_correction.o $builddir/eml_int_forloop_overflow_check.o $builddir/indexShapeCheck.o $builddir/interp1.o $builddir/fliplr.o $builddir/spline.o $builddir/ppval.o $builddir/_coder_rt_slice_time_correction_api.o $builddir/_coder_rt_slice_time_correction_mex.o $builddir/_coder_rt_slice_time_correction_info.o $builddir/cpp_mexapi_version.o 

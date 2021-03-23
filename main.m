@@ -4,14 +4,11 @@ clearvars; close all;
 pause('on');
 % workingdir='/Users/harissair/Desktop/realtime_test_data/real_time';
 % addpath('/Users/harissair/Desktop/realtime_test_data/scripts');
-
-workingdir = "."; % data folder 
+addpath ./code; % code folder
+workingdir = "../newdata2/"; % data folder 
 maskdir = "../SPM8_apriori/"; % mask folder
 
-addpath ./code; % code folder
-cd(workingdir);
-
-I_pre = 30; % Time Needed for preprocessing
+I_pre = 20; % Time Needed for preprocessing
 window_width = 50; % sliding window width
 tr=2; %TR
 % seedval=[];
@@ -41,15 +38,18 @@ smoothedvolume=zeros(64*64*36, NT);
 nuisX_comb = zeros(NT, 26);
 ROIval1 = [];
 volRaw =zeros(64*64*36, NT);
-
+parworkers = 4;
+parpool(parworkers);
 answer = {'48','26','25','48','43','25'}'; % predefined seeds location.
 
 [f1, f2, f3, sAXs, fill_s, line_s, f2subplots, f3subplots] = CreateFigures(imINIT);
 
+% cd(workingdir);
+
 inds = 2:300;
 for i = 1: length(inds)
     tic
-    [X,dcmfile] = loadDICOM(i, tr, inds);
+    [X,dcmfile] = loadDICOM(i, tr, inds, workingdir);
     if i==1
         % LOAD THE FIRST IMAGE AND INITIALIZE THE STORAGE
         [volumeoriginal,brainmask,brainmaskNaN, icaSigConc, maskIDXs, volVec, volRaw, smoothedvolume] = ...
@@ -60,8 +60,8 @@ for i = 1: length(inds)
         
         %open a dialog to choose seeds
         if isempty(answer), answer = chooseSeed(X); end
-        uif = uifigure;
-        d = uiprogressdlg(uif,'Title','Processing Preliminary Scans','Indeterminate','on');
+        uif = uifigure('HandleVisibility', 'on');
+        d=uiprogressdlg(uif,'Title','Processing Preliminary Scans','Indeterminate','on');
         pause(0.1);
         
         % CREATE NEIGHBORHOOD INDEX
@@ -73,25 +73,29 @@ for i = 1: length(inds)
     elseif i <= I_pre
         % preliminary preprocessing
         [nuisX_comb, tform_old, volVec, volRaw] =...
-            prel_preprocessing(i, X, maskIDXs, volRaw, slice_times, slice_indices, tr,...
+            prel_preprocessing_Wmex(i, X, maskIDXs, volRaw, slice_times, slice_indices, tr,...
             brainmask, tform_old, volVec, nuisX_comb, volumeoriginal, wm_csf_mask, motion_tol);
         
     else
-        close(d);
+        d.Message = 'Processing Preliminary Scans is Done!';
+        d.Indeterminate = 'off';
         
         set(f1,'visible','on');
         set(f2,'visible','on');
         set(f3,'visible','on');
         % preprocessing
+        
         [VOL_proc, volRaw, tform_old, volVec, smoothedvolume, nuisX_comb, ATinv] =...
-            preprocessing(i, I_pre, nuisX_comb, volVec, brainmask, smooth_sig, maskIDXs, smoothedvolume,X, volRaw, ...
-            slice_times,  slice_indices, tr,volumeoriginal, wm_csf_mask, motion_tol, tform_old, bp_filt, ATinv);
+            preprocessing_Wmex(i, I_pre, nuisX_comb, volVec, brainmask, smooth_sig, maskIDXs, smoothedvolume,X, volRaw, ...
+            slice_times,  slice_indices, tr,volumeoriginal, wm_csf_mask, motion_tol, tform_old, bp_filt, ATinv, parworkers);
         
         % update Mval, etc
+        
         [sm_vol, Mval,norMval, norMvaldetrend] = MValupdates(VOL_proc, nbhd1_ind, nbhd2_ind);
         
         if rem(i , 1)==0
             % time series correlations
+            
             [LeftX, RightX] = updateplot_timeSeries(sAXs, fill_s, line_s, window_width, Mval, norMval, norMvaldetrend);
             
             % update correlation plot
@@ -106,6 +110,7 @@ for i = 1: length(inds)
             frmIdx = frmIdx+1;
             
             % update ICA
+            
             [icasig0,icaSigConc,ica_ind, ncomp] = ...
                 icaUpdates(sm_vol, icasig0, ica_ind, icaSigConc, LeftX, RightX, b, nbhd_idxs, nICAconc);
             

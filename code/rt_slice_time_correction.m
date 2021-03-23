@@ -7,9 +7,7 @@ if update == 0
     Ts_q = tr*(1:nt);
     vol_q = zeros(size(volRaw));
     for j = 1: length(slice_times)
-
         ind = find(slice_indices == j);
-
         if ~isempty(ind)
             for k = 1:length(ind)
                 Ts = Ts_q + slice_times(j);
@@ -29,7 +27,6 @@ else
                 Ts = tr * (1:nt) + slice_times(j);
                 vol_q(ind(k)) = interp1(Ts, volRaw(ind(k),:), Ts_q, 'spline');
             end
-            
         end
     end
 end
