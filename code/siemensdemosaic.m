@@ -3,7 +3,7 @@
 % Modified by Guoqing Wang 07/29/2020
 
 function volume = siemensdemosaic(dicomfile)
-    matrix = [1:64];
+    matrix = 1:64;
 %     slicethickenss = 4;
     X=dicomread(dicomfile);
     X=im2double(X);
