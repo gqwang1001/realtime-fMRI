@@ -5,8 +5,8 @@ pause('on');
 % workingdir='/Users/harissair/Desktop/realtime_test_data/real_time';
 % addpath('/Users/harissair/Desktop/realtime_test_data/scripts');
 addpath ./code; % code folder
-workingdir = "../newdata2/"; % data folder 
-maskdir = "../SPM8_apriori/"; % mask folder
+workingdir = "../testdata/"; % data folder 
+maskdir = "./Masks/"; % mask folder
 
 I_pre = 30; % Time Needed for preprocessing
 window_width = 50; % sliding window width
@@ -19,7 +19,6 @@ NmotionPars = 6; % number of motion parameters
 nica = 15; % number of ICA component
 NT = 1e3; % length scanning
 figUpdate_period = 5; % period of updating figures
-
 
 % Other initalization parameters
 size3d = [64, 64, 36];
