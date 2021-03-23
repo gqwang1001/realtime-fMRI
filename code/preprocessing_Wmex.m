@@ -38,6 +38,6 @@ function [VOL_proc,volRaw, tform_old, volVec, smoothedvolume, nuisX_comb, ATinv]
         % Bandpass filtering
         bp_basis = rt_dctmtx(bp_filt(1), bp_filt(2), nrow);
         VOL_proc =  smoothedvolume(:, 1:(i-1)) * (eye(nrow) - (bp_basis * bp_basis'));
-        toc
+        
 end
 

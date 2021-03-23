@@ -8,7 +8,7 @@ addpath ./code; % code folder
 workingdir = "../newdata2/"; % data folder 
 maskdir = "../SPM8_apriori/"; % mask folder
 
-I_pre = 20; % Time Needed for preprocessing
+I_pre = 30; % Time Needed for preprocessing
 window_width = 50; % sliding window width
 tr=2; %TR
 % seedval=[];
@@ -18,6 +18,8 @@ bp_filt = [.01, 10]; % bandpass filtering
 NmotionPars = 6; % number of motion parameters
 nica = 15; % number of ICA component
 NT = 1e3; % length scanning
+figUpdate_period = 5; % period of updating figures
+
 
 % Other initalization parameters
 size3d = [64, 64, 36];
@@ -39,7 +41,9 @@ nuisX_comb = zeros(NT, 26);
 ROIval1 = [];
 volRaw =zeros(64*64*36, NT);
 parworkers = 4;
-parpool(parworkers);
+
+
+% parpool(parworkers);
 answer = {'48','26','25','48','43','25'}'; % predefined seeds location.
 
 [f1, f2, f3, sAXs, fill_s, line_s, f2subplots, f3subplots] = CreateFigures(imINIT);
@@ -93,7 +97,7 @@ for i = 1: length(inds)
         
         [sm_vol, Mval,norMval, norMvaldetrend] = MValupdates(VOL_proc, nbhd1_ind, nbhd2_ind);
         
-        if rem(i , 1)==0
+        if rem(i , figUpdate_period)==0
             % time series correlations
             
             [LeftX, RightX] = updateplot_timeSeries(sAXs, fill_s, line_s, window_width, Mval, norMval, norMvaldetrend);
