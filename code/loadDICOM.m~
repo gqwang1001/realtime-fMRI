@@ -6,10 +6,10 @@ filename=dir(char(nextfile));
 while isempty(filename)==1
     pause(tr)
     disp(['waiting ', num2str(tr),' seconds for next file']);
-    filename=dir(char(nextfile));
+    filename=dir(nextfile);
 end
 
-dcmfile=dir(char(workingdir+['*' sprintf('%03d',inds(i)) '.dcm']));
+dcmfile=dir(workingdir+['*' sprintf('%03d',inds(i)) '.dcm']);
 dcmfile = dcmfile(1);
 dicomfile=dcmfile.name;
 

@@ -5,7 +5,7 @@ pause('on');
 % workingdir='/Users/harissair/Desktop/realtime_test_data/real_time';
 % addpath('/Users/harissair/Desktop/realtime_test_data/scripts');
 addpath ./code; % code folder
-workingdir = "../testdata/"; % data folder 
+workingdir = "../newdata2/"; % data folder
 maskdir = "./Masks/"; % mask folder
 
 I_pre = 30; % Time Needed for preprocessing
@@ -14,7 +14,7 @@ tr=2; %TR
 % seedval=[];
 ROI_size=3; % ROI neighborhood size
 brainMask_Threshold = 0.005;
-bp_filt = [.01, 10]; % bandpass filtering 
+bp_filt = [.01, 10]; % bandpass filtering
 NmotionPars = 6; % number of motion parameters
 nica = 15; % number of ICA component
 NT = 1e3; % length scanning
@@ -63,9 +63,10 @@ for i = 1: length(inds)
         
         %open a dialog to choose seeds
         if isempty(answer), answer = chooseSeed(X); end
-        uif = uifigure('HandleVisibility', 'on');
-        d=uiprogressdlg(uif,'Title','Processing Preliminary Scans','Indeterminate','on');
-        pause(0.1);
+        %         uif = uifigure('HandleVisibility', 'on');
+        %         d=uiprogressdlg(uif,'Title','Processing Preliminary Scans','Indeterminate','on');
+        sprintf('Processing Prelimnary Scans %d/%d', i ,I_pre)
+%         pause(0.1);
         
         % CREATE NEIGHBORHOOD INDEX
         [nbhd_idxs, nbhd1_ind, nbhd2_ind] = find_nbhd_inds(answer, brainmaskNaN, maskIDXs, ROI_size);
@@ -80,8 +81,9 @@ for i = 1: length(inds)
             brainmask, tform_old, volVec, nuisX_comb, volumeoriginal, wm_csf_mask, motion_tol);
         
     else
-        d.Message = 'Processing Preliminary Scans is Done!';
-        d.Indeterminate = 'off';
+        %         d.Message = 'Processing Preliminary Scans is Done!';
+        %         d.Indeterminate = 'off';
+        disp('Processing Prelimnary Scans is Done!');
         
         set(f1,'visible','on');
         set(f2,'visible','on');
