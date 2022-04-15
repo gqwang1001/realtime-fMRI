@@ -1,6 +1,7 @@
 function [answer] = chooseSeed(X)
 % create a dialog to choose seeds
-            f_slices = figure('Position', [500, 500, 1000, 800]);
+            f_slices = figure(4);
+%             f_slices.Position = [500, 500, 1000, 800];
             subplot(2,3,1)
             imagesc(X(:,:,24));colormap(gray);
             title(24);
@@ -36,7 +37,8 @@ function [answer] = chooseSeed(X)
             
             %pick motor cortex hires
             
-            f_slice = figure('Position', [500, 500, 500, 500]);
+            f_slice = figure(5);
+%             f_slice.Position = [500, 500, 1000, 800];
             imagesc(X(:,:,str2num(ans_slice{1,1})));
             title(['Slice ', ans_slice{1,1},' (Right Motor Cortex)']);
             colormap(gray);
@@ -48,7 +50,8 @@ function [answer] = chooseSeed(X)
             answer{3,1} = ans_slice{1,1};
             close(f_slice);
             
-            f_slice1 = figure('Position', [500, 500, 500, 500]);
+            f_slice1 = figure(6);
+%             f_slice1.Position = [500, 500, 1000, 800];
             imagesc(X(:,:,str2num(ans_slice{2,1})));
             title(['Slice ', ans_slice{2,1},' (Left Motor Cortex)']);
             colormap(gray);

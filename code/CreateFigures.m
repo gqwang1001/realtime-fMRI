@@ -2,7 +2,7 @@ function [f1, f2, f3,sAXs, fill_s, line_s, f2subplots, f3subplots] = CreateFigur
 % create figures
 
 f1 = figure(1);
-f1.Position =  [200, 500, 500, 500];
+% f1.Position =  [200, 500, 500, 500];
 f1.Name = 'Time Series';
 set(gca, 'xlimmode','manual','ylimmode','manual','zlimmode','manual',...
     'climmode','manual','alimmode','manual');
@@ -28,7 +28,7 @@ set(f1,'visible','off');
 
 
 f2 = figure(2);
-f2.Position =  [1000, 500, 1200, 800];
+% f2.Position =  [1000, 500, 1200, 800];
 f2.Name = 'Correlation Map';
 f2subplots = {};
 f2axs = {};
@@ -43,7 +43,7 @@ end
 
 
 f3 = figure(3);
-f3.Position =  [1000, 500, 1200, 800];
+% f3.Position =  [1000, 500, 1200, 800];
 f3.Name = 'IC Map';
 f3subplots = {};
 f3axs = {};
