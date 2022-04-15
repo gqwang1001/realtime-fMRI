@@ -5,7 +5,7 @@ pause('on');
 % workingdir='/Users/harissair/Desktop/realtime_test_data/real_time';
 % addpath('/Users/harissair/Desktop/realtime_test_data/scripts');
 addpath ./code; % code folder
-workingdir = "../newdata2/"; % data folder
+workingdir = "D:\Dropbox\projects\fastfMRI\realtime_rsfMRI\newdata2\"; % data folder
 maskdir = "./Masks/"; % mask folder
 
 I_pre = 30; % Time Needed for preprocessing
@@ -43,8 +43,8 @@ parworkers = 4;
 
 
 % parpool(parworkers);
-answer = {'48','26','25','48','43','25'}'; % predefined seeds location.
-
+% answer = {'48','26','25','48','43','25'}'; % predefined seeds location.
+answer = {};
 [f1, f2, f3, sAXs, fill_s, line_s, f2subplots, f3subplots] = CreateFigures(imINIT);
 
 % cd(workingdir);
