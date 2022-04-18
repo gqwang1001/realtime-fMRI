@@ -1,6 +1,9 @@
-function [X,dcmfile] = loadDICOM(i,tr, inds, workingdir)
+function [X,dcmfile] = loadDICOM(i,tr, inds, workingdir, seriesID, studyID)
 
-nextfile = strcat(workingdir, ['*' sprintf('%03d',inds(i)+1) '.dcm']);
+
+fname = sprintf('%03d_%06d_%06d.dcm', studyID, seriesID, inds(i)+1); % ['*' sprintf('%03d',inds(i)+1) '.dcm']
+
+nextfile = strcat(workingdir, fname);
 filename=dir(char(nextfile));
 
 while isempty(filename)==1
@@ -9,7 +12,7 @@ while isempty(filename)==1
     filename=dir(char(nextfile));
 end
 
-dcmfile=dir(char(strcat(workingdir, ['*' sprintf('%03d',inds(i)+1) '.dcm'])));
+dcmfile=dir(char(strcat(workingdir, fname)));
 dcmfile = dcmfile(1);
 dicomfile=dcmfile.name;
 
