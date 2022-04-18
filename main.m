@@ -8,6 +8,11 @@ addpath ./code; % code folder
 workingdir = "D:\Dropbox\projects\fastfMRI\realtime_rsfMRI\newdata2\"; % data folder
 maskdir = "./Masks/"; % mask folder
 
+studyID = 1;
+seriesID = 12;
+imageID = 1;
+
+
 I_pre = 30; % Time Needed for preprocessing
 window_width = 50; % sliding window width
 tr=2; %TR
@@ -52,7 +57,7 @@ answer = {};
 inds = 2:300;
 for i = 1: length(inds)
     tic
-    [X,dcmfile] = loadDICOM(i, tr, inds, workingdir);
+    [X,dcmfile] = loadDICOM(i, tr, inds, workingdir, seriesID, studyID);
     if i==1
         % LOAD THE FIRST IMAGE AND INITIALIZE THE STORAGE
         [volumeoriginal,brainmask,brainmaskNaN, icaSigConc, maskIDXs, volVec, volRaw, smoothedvolume] = ...
